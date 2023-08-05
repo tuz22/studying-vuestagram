@@ -4,17 +4,18 @@
             <li>Cancel</li>
         </ul>
         <ul class="header-button-right">
-            <li>Next</li>
+            <li @click="step++">Next</li>
         </ul>
         <img src="./assets/logo.png" class="logo" />
     </div>
 
-    <Container :postData="postData" :step="step" />
+    <Container :postData="postData" :step="step" :image="image" />
     <button @click="more">더보기</button>
 
     <div class="footer">
         <ul class="footer-button-plus">
-            <input type="file" id="file" class="inputfile" />
+            <!-- multiple: 다중선택 / accept="image/*": 이미지 선택을 기본으로 -->
+            <input @change="upload" accept="image/*" type="file" id="file" class="inputfile" />
             <label for="file" class="input-plus">+</label>
         </ul>
     </div>
@@ -32,6 +33,7 @@ export default {
             postData: postData,
             moreCount: 0,
             step: 0,
+            image: '',
         };
     },
     methods: {
@@ -46,6 +48,15 @@ export default {
                 .catch((err) => {
                     console.log(err);
                 });
+        },
+        upload(e) {
+            let file = e.target.files;
+            console.log(file[0]);
+            console.log(file[0].type); // 이미지 타입
+            let url = URL.createObjectURL(file[0]); // 가상의 이미지 URL 생성
+            console.log(url);
+            this.step++; // 다음 페이지로 이동
+            this.image = url;
         },
     },
     components: { Container },
