@@ -9,11 +9,9 @@
     <div v-if="step == 1">
         <div class="upload-image" :style="{ backgroundImage: `url(${image})` }"></div>
         <div class="filters">
-            <div class="filter-1"></div>
-            <div class="filter-1"></div>
-            <div class="filter-1"></div>
-            <div class="filter-1"></div>
-            <div class="filter-1"></div>
+            <FilterBox v-for="(filter, i) in filterData" :key="i" :image="image" :filter="filter">
+                {{ filter }}
+            </FilterBox>
         </div>
     </div>
 
@@ -22,21 +20,28 @@
         <div class="upload-image" :style="{ backgroundImage: `url(${image})` }"></div>
         <div class="write">
             <textarea @input="$emit('write', $event.target.value)" class="write-box">write!</textarea>
-            console.log($event)
         </div>
     </div>
 </template>
 
 <script>
 import Post from './Post.vue';
+import FilterBox from './FilterBox.vue';
+import filterData from './../data/filterData';
+
 export default {
     name: 'Container-component',
+    data() {
+        return {
+            filterData: filterData,
+        };
+    },
     props: {
         postData: Array,
         step: Number,
         image: String,
     },
-    components: { Post },
+    components: { Post, FilterBox },
 };
 </script>
 
