@@ -36,6 +36,7 @@ export default {
             step: 0,
             image: '',
             writePost: '',
+            selectedFilter: '',
         };
     },
     methods: {
@@ -69,11 +70,16 @@ export default {
                 date: 'May 15',
                 liked: false,
                 content: this.writePost,
-                filter: 'perpetua',
+                filter: this.selectedFilter,
             };
             this.postData.unshift(myPost); // unshift: 제일 앞에 push
-            this.setp = 0;
+            this.step = 0;
         },
+    },
+    mounted() {
+        this.emitter.on('selectedFilter', (filter) => {
+            this.selectedFilter = filter;
+        });
     },
     components: { Container },
 };

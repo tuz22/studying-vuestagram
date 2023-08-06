@@ -1,25 +1,27 @@
 <template>
-    <div v-for="(a, i) in postData" :key="i">
-        <div v-if="step == 0">
-            <Post :postData="postData[i]" />
+    <div>
+        <div v-for="(a, i) in postData" :key="i">
+            <div v-if="step == 0">
+                <Post :postData="postData[i]" />
+            </div>
         </div>
-    </div>
 
-    <!-- 필터선택페이지 -->
-    <div v-if="step == 1">
-        <div class="upload-image" :style="{ backgroundImage: `url(${image})` }"></div>
-        <div class="filters">
-            <FilterBox v-for="(filter, i) in filterData" :key="i" :image="image" :filter="filter">
-                {{ filter }}
-            </FilterBox>
+        <!-- 필터선택페이지 -->
+        <div v-if="step == 1">
+            <div :class="`upload-image ${selectedFilter}`" :style="{ backgroundImage: `url(${image})` }"></div>
+            <div class="filters">
+                <FilterBox v-for="(filter, i) in filterData" :key="i" :image="image" :filter="filter">
+                    {{ filter }}
+                </FilterBox>
+            </div>
         </div>
-    </div>
 
-    <!-- 글작성페이지 -->
-    <div v-if="step == 2">
-        <div class="upload-image" :style="{ backgroundImage: `url(${image})` }"></div>
-        <div class="write">
-            <textarea @input="$emit('write', $event.target.value)" class="write-box">write!</textarea>
+        <!-- 글작성페이지 -->
+        <div v-if="step == 2">
+            <div :class="`upload-image ${selectedFilter}`" :style="{ backgroundImage: `url(${image})` }"></div>
+            <div class="write">
+                <textarea @input="$emit('write', $event.target.value)" class="write-box">write!</textarea>
+            </div>
         </div>
     </div>
 </template>
@@ -34,7 +36,13 @@ export default {
     data() {
         return {
             filterData: filterData,
+            selectedFilter: '',
         };
+    },
+    mounted() {
+        this.emitter.on('selectedFilter', (filter) => {
+            this.selectedFilter = filter;
+        });
     },
     props: {
         postData: Array,
