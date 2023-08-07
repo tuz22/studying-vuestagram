@@ -9,7 +9,18 @@
         </ul>
         <img src="./assets/logo.png" class="logo" />
     </div>
+    <!-- vuex ex)-->
+    <h4>
+        안녕 {{ $store.state.name }}<span>{{ $store.state.age }}</span>
+    </h4>
+    <!-- commit: mutations요청 -->
+    <button @click="$store.commit('updateName')">이름변경</button>
+    <button @click="$store.commit('addAge', 3)">나이+</button>
 
+    <p>{{ $store.state.more }}</p>
+    <!-- dispatch: actions요청 -->
+    <button @click="$store.dispatch('getData')">더보기</button>
+    <!-- vuex -->
     <Container @write="writePost = $event" :postData="postData" :step="step" :image="image" />
     <button @click="more">더보기</button>
 
