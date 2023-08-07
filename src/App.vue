@@ -16,11 +16,21 @@
     <!-- commit: mutations요청 -->
     <button @click="$store.commit('updateName')">이름변경</button>
     <button @click="$store.commit('addAge', 3)">나이+</button>
+    <button @click="addAge(3)">나이+3</button>
 
     <p>{{ $store.state.more }}</p>
     <!-- dispatch: actions요청 -->
     <button @click="$store.dispatch('getData')">더보기</button>
     <!-- vuex -->
+
+    <p>{{ now() }}{{ counter }}</p>
+    <p>{{ now2 }}{{ counter }}</p>
+    <button @click="counter++">버튼</button>
+
+    <!-- mapState 사용 -->
+    {{ name }} {{ age }} {{ likes }}
+    {{ 내이름 }}
+
     <Container @write="writePost = $event" :postData="postData" :step="step" :image="image" />
     <button @click="more">더보기</button>
 
@@ -37,6 +47,7 @@
 import Container from './components/Container.vue';
 import postData from './data/postData';
 import axios from 'axios';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 export default {
     name: 'App',
@@ -48,9 +59,12 @@ export default {
             image: '',
             writePost: '',
             selectedFilter: '',
+            counter: 0,
         };
     },
     methods: {
+        ...mapMutations(['addAge', 'likes', 'setMore']),
+        ...mapActions(['getData']),
         more() {
             axios
                 .get(`https://codingapple1.github.io/vue/more${this.moreCount}.json`) // axios.post('URL', {name: 'kim'}).then()
@@ -86,6 +100,19 @@ export default {
             this.postData.unshift(myPost); // unshift: 제일 앞에 push
             this.step = 0;
         },
+        now() {
+            return new Date();
+        },
+    },
+    computed: {
+        now2() {
+            return new Date();
+        },
+        name() {
+            return this.$store.state.name;
+        },
+        ...mapState(['name', 'age', 'likes']),
+        ...mapState({ 내이름: 'name' }),
     },
     mounted() {
         this.emitter.on('selectedFilter', (filter) => {
