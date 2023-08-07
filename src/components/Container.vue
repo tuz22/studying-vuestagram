@@ -23,6 +23,11 @@
                 <textarea @input="$emit('write', $event.target.value)" class="write-box">write!</textarea>
             </div>
         </div>
+
+        <!-- 마이페이지 -->
+        <div v-if="step == 3">
+            <Mypage :one="1" :two="2" />
+        </div>
     </div>
 </template>
 
@@ -30,6 +35,7 @@
 import Post from './Post.vue';
 import FilterBox from './FilterBox.vue';
 import filterData from './../data/filterData';
+import Mypage from './Mypage.vue';
 
 export default {
     name: 'Container-component',
@@ -49,7 +55,7 @@ export default {
         step: Number,
         image: String,
     },
-    components: { Post, FilterBox },
+    components: { Post, FilterBox, Mypage },
 };
 </script>
 
